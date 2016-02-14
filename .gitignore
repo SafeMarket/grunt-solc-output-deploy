@@ -1,2 +1,4 @@
 node_modules
 chain.json
+.node-*
+.DS_Store
