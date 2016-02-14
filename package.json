@@ -1,5 +1,5 @@
 {
-  "name": "grunt-solidity-deployer",
+  "name": "grunt-solc-output-deploy",
   "version": "0.0.1",
   "description": "Deploy solidity contracts with grunt",
   "main": "Gruntfile.js",

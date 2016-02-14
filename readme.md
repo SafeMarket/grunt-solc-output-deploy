@@ -2,6 +2,8 @@
 
 > Deploy the outputs of solc
 
+Works beautifully with [grunt-geth](https://github.com/SafeMarket/grunt-geth) and [grunt-solc](https://github.com/SafeMarket/grunt-solc)
+
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
 
