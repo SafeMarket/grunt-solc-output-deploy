@@ -1,0 +1,27 @@
+{
+  "name": "grunt-solidity-deployer",
+  "version": "0.0.0",
+  "description": "Deploy solidity contracts with grunt",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "grunt",
+    "solidity",
+    "deploy"
+  ],
+  "author": "Aakil Fernandes",
+  "license": "MIT",
+  "dependencies": {
+    "ethereumjs-tx": "^0.7.3",
+    "grunt": "^0.4.5",
+    "hooked-web3-provider": "^1.0.0",
+    "keythereum": "^0.2.2",
+    "q": "^1.4.1",
+    "web3": "^0.15.2"
+  },
+  "devDependencies": {
+    "grunt-geth": "^0.1.2"
+  }
+}
