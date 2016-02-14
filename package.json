@@ -1,6 +1,6 @@
 {
   "name": "grunt-solidity-deployer",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Deploy solidity contracts with grunt",
   "main": "Gruntfile.js",
   "scripts": {
