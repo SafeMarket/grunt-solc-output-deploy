@@ -22,6 +22,13 @@ module.exports = function(grunt){
 			,chain = grunt.file.exists(options.chain) ? grunt.file.readJSON(options.chain) : {}
 			,rpcUrl = 'http://'+options.rpchost+':'+options.rpcport
 
+		['contracts','key','chain','deploy'].forEach(function(key){
+			if(options[key]) return;
+
+			grung.log.error('options.'+key,'missing');
+			done(false)
+		})
+
 		web3.setProvider(new web3.providers.HttpProvider(rpcUrl));
 
 		var contractsToDeploy = options.deploy.filter(function(contractName){
