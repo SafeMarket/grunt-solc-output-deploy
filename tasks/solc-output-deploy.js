@@ -14,6 +14,7 @@ module.exports = function(grunt){
 				rpchost: 'localhost'
 				,rpcport: 8545
 				,forceRedeploy:false
+				,onDeploy: {}
 			})
 			,web3 = new Web3()
 			,contractsObj = grunt.file.readJSON(options.contracts).contracts
@@ -30,6 +31,7 @@ module.exports = function(grunt){
 			done(false)
 		})
 
+		web3.eth.defaultAccount = address
 		web3.setProvider(new web3.providers.HttpProvider(rpcUrl));
 
 		var contractsToDeploy = options.deploy.filter(function(contractName){
@@ -90,8 +92,7 @@ module.exports = function(grunt){
 			
 			var deferred = Q.defer()
 				,txParams = {
-					from: hexify(address)
-					,data: hexify(contractsObj[contractName].bytecode)
+					data: hexify(contractsObj[contractName].bytecode)
 					,gasPrice: web3.toHex(web3.eth.gasPrice)
 				}
 
@@ -108,6 +109,23 @@ module.exports = function(grunt){
 				waitForTx(txHex).then(function(transactionReceipt){
 
 					grunt.log.writeln('Deployed',contractName,'to',transactionReceipt.contractAddress)
+
+					if(options.onDeploy[contractName]){
+						var abi = JSON.parse(contractsObj[contractName].interface)
+							,thisContract = web3.eth.contract(abi).at(transactionReceipt.contractAddress)
+
+						options.onDeploy[contractName].forEach(function(snippet){
+							grunt.log.writeln('eval:',snippet)
+							try{
+								eval(snippet);
+							}catch(e){
+								grunt.log.error(e)
+								grunt.file.write(options.chain,JSON.stringify(chain))
+								done(false)
+							}
+							
+						})
+					}
 
 					chain[contractName] = {
 						address:hexify(transactionReceipt.contractAddress)
