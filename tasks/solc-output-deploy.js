@@ -21,8 +21,9 @@ module.exports = function(grunt){
 			,address = hexify(keyObject.address)
 			,chain = grunt.file.exists(options.chain) ? grunt.file.readJSON(options.chain) : {}
 			,rpcUrl = 'http://'+options.rpchost+':'+options.rpcport
+			,requiredOptionKeys = ['contracts','key','chain','deploy']
 
-		['contracts','key','chain','deploy'].forEach(function(key){
+		requiredOptionKeys.forEach(function(key){
 			if(options[key]) return;
 
 			grung.log.error('options.'+key,'missing');
