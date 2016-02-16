@@ -76,7 +76,7 @@ module.exports = function(grunt){
 					,gasPrice: web3.toHex(web3.eth.gasPrice)
 				}
 
-			txParams.gasLimit = web3.toHex(web3.eth.estimateGas(txParams))
+			txParams.gas = web3.toHex(web3.eth.estimateGas(txParams))
 	
 			web3.eth.sendTransaction(txParams,function(err,txHex){
 				if(err){
