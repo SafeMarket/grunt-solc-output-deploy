@@ -1,12 +1,8 @@
-
 module.exports = function(grunt){
 
 	grunt.registerMultiTask('solc-output-deploy',function(){
 
 		var Web3 = require('web3')
-			,HookedWeb3Provider = require("hooked-web3-provider")
-			,Tx = require('ethereumjs-tx')
-			,keythereum = require('keythereum')
 			,Q = require('q')
 		
 		var done = this.async()
@@ -18,21 +14,28 @@ module.exports = function(grunt){
 			})
 			,web3 = new Web3()
 			,contractsObj = grunt.file.readJSON(options.contracts).contracts
-			,keyObject = grunt.file.readJSON(options.key)
-			,address = hexify(keyObject.address)
 			,chain = grunt.file.exists(options.chain) ? grunt.file.readJSON(options.chain) : {}
 			,rpcUrl = 'http://'+options.rpchost+':'+options.rpcport
 			,requiredOptionKeys = ['contracts','key','chain','deploy']
 
+		web3.setProvider(new web3.providers.HttpProvider(rpcUrl));
+
+		var address = options.address || web3.eth.accounts[0]
+
+		if(!address){
+			grunt.log.error('Could not determine address')
+			done(false)
+		}
+
+		grunt.log.writeln('Setting',address,'as default account')
+		web3.eth.defaultAccount = address
+
 		requiredOptionKeys.forEach(function(key){
 			if(options[key]) return;
 
-			grung.log.error('options.'+key,'missing');
+			grunt.log.error('options.'+key,'missing');
 			done(false)
 		})
-
-		web3.eth.defaultAccount = address
-		web3.setProvider(new web3.providers.HttpProvider(rpcUrl));
 
 		var contractsToDeploy = options.deploy.filter(function(contractName){
 			if(chain[contractName] && hexify(contractsObj[contractName].runtimeBytecode) == web3.eth.getCode(chain[contractName].address)){
@@ -50,27 +53,6 @@ module.exports = function(grunt){
 			grunt.log.writeln(contractsToDeploy.length,'contracts need deployment')
 		}
 
-		grunt.log.writeln('Decrypting private key for address',address)
-
-		var privateKey = keythereum.recover(options.password,keyObject)
-
-		web3.setProvider(new HookedWeb3Provider({
-			host: rpcUrl
-			,transaction_signer: { 
-			    hasAddress: function(_address, callback) {
-			    	if(_address==address)
-				    	callback(null,true)
-				    else
-				    	callback('Incorrect address',false)
-			    },
-			    signTransaction: function(txParams, callback) {
-			    	var tx = new Tx(txParams)
-			    	tx.sign(privateKey)
-			    	callback(null,hexify(tx.serialize().toString('hex')))
-			    }
-			  }
-		}))
-
 		if(!web3.isConnected()){
 			grunt.log.error('Web3 cannot connect on',options.rpchost,options.rpcport)
 			return done(false)
@@ -85,8 +67,6 @@ module.exports = function(grunt){
 			grunt.log.success('Deployed all contracts and wrote chain to',options.chain)
 			done(true)
 		})
-
-
 
 		function Deployment(contractName){
 			

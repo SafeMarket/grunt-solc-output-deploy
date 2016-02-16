@@ -31,14 +31,13 @@ grunt.config.init({
                 rpchost:'localhost'
                 ,rpcport:8101
                 ,contracts:'contracts.json' //solc output
-                ,key:'key.json'             //keyfile
-                ,password:'dev_password'    //password to unlock key file
                 ,chain:'chain.json'         //where to save contract runtimeBytecodes/addresses
+                ,address: '0x00'            //optional; defaultAccount address. Uses web3.eth.accounts[0] by default
                 ,deploy:[
                     'AliasReg'
                     ,'Keystore'
                     ,'OrderBook'
-                ],onDeploy:{                //optional javascript to eval
+                ],onDeploy:{                //optional; javascript to eval
                     'OrderBook':[
                         "thisContract.set('CMC:TETH:USD', 830075000000, function(){});"
                         ,"thisContract.set('CMC:TETH:EUR', 782024448475, function(){});"
