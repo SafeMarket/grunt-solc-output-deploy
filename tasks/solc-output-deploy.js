@@ -16,7 +16,14 @@ module.exports = function(grunt){
 			,contractsObj = grunt.file.readJSON(options.contracts).contracts
 			,chain = grunt.file.exists(options.chain) ? grunt.file.readJSON(options.chain) : {}
 			,rpcUrl = 'http://'+options.rpchost+':'+options.rpcport
-			,requiredOptionKeys = ['contracts','key','chain','deploy']
+			,requiredOptionKeys = ['contracts','chain','deploy']
+
+		requiredOptionKeys.forEach(function(key){
+			if(options[key]) return;
+
+			grunt.log.error('options.'+key,'missing');
+			done(false)
+		})
 
 		web3.setProvider(new web3.providers.HttpProvider(rpcUrl));
 
@@ -29,13 +36,6 @@ module.exports = function(grunt){
 
 		grunt.log.writeln('Setting',address,'as default account')
 		web3.eth.defaultAccount = address
-
-		requiredOptionKeys.forEach(function(key){
-			if(options[key]) return;
-
-			grunt.log.error('options.'+key,'missing');
-			done(false)
-		})
 
 		var contractsToDeploy = options.deploy.filter(function(contractName){
 			if(chain[contractName] && hexify(contractsObj[contractName].runtimeBytecode) == web3.eth.getCode(chain[contractName].address)){

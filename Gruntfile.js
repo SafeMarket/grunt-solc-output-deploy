@@ -10,8 +10,6 @@ module.exports = function(grunt){
 					rpchost:'localhost'
 		            ,rpcport:8101
 		            ,contracts:'contracts.json' //solc output
-		            ,key:'key.json' //keyfile
-		            ,password:'dev_password' //password to unlock key file
 		            ,chain:'chain.json' //saved contract runtimeBytecodes/addresses
 		            ,deploy:[
 		                'AliasReg'
