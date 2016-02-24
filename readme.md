@@ -16,7 +16,7 @@ npm install solc-output-deploy --save-dev
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
 
 ```js
-grunt.loadNpmTasks('solc-output-deploy');
+grunt.loadNpmTasks('grunt-solc-output-deploy');
 ```
 
 ## The "solc-output-deploy" task
