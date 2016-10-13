@@ -39,12 +39,12 @@ grunt.config.init({
                     ,'OrderBook'
                 ],onDeploy:{                //optional; javascript to eval
                     'OrderBook':[
-                        "thisContract.set('CMC:TETH:USD', 830075000000, function(){});"
-                        ,"thisContract.set('CMC:TETH:EUR', 782024448475, function(){});"
-                        ,"thisContract.set('CMC:TETH:CNY', 5311462328050, function(){});"
-                        ,"thisContract.set('CMC:TETH:CAD', 1107984940080, function(){});"
-                        ,"thisContract.set('CMC:TETH:RUB', 55780151819800, function(){});"
-                        ,"thisContract.set('CMC:TETH:BTC', 2306400000, function(){});"
+                        "contracts['OrderBook'].set('CMC:TETH:USD', 830075000000, function(){});"
+                        ,"contracts['OrderBook'].set('CMC:TETH:EUR', 782024448475, function(){});"
+                        ,"contracts['OrderBook'].set('CMC:TETH:CNY', 5311462328050, function(){});"
+                        ,"contracts['OrderBook'].set('CMC:TETH:CAD', 1107984940080, function(){});"
+                        ,"contracts['OrderBook'].set('CMC:TETH:RUB', 55780151819800, function(){});"
+                        ,"contracts['OrderBook'].set('CMC:TETH:BTC', 2306400000, function(){});"
                     ]
                 }
             }
