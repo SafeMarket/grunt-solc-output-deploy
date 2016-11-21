@@ -9,7 +9,7 @@ module.exports = function exportGrunt(grunt) {
       rpchost: 'localhost',
       rpcport: 8545,
       forceRedeploy: false,
-      onDeploy: {}.
+      onDeploy: {},
       contractParams:{}
     })
     const web3 = new Web3()
@@ -87,7 +87,7 @@ module.exports = function exportGrunt(grunt) {
 
       const deferred = Q.defer()
       const contract = web3.eth.contract(contractsObj[contractName].abi)
-      const contractParams = options.contractParams[contractName] || []
+      const contractParams = options.contractParams[contractName]
       const txParams = {
         data: hexify(contractsObj[contractName].bytecode),
         gasPrice: web3.toHex(web3.eth.gasPrice)
