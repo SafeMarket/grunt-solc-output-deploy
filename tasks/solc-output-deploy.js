@@ -9,7 +9,8 @@ module.exports = function exportGrunt(grunt) {
       rpchost: 'localhost',
       rpcport: 8545,
       forceRedeploy: false,
-      onDeploy: {}
+      onDeploy: {}.
+      contractParams:{}
     })
     const web3 = new Web3()
     const contractsObj = grunt.file.readJSON(options.contracts).contracts
@@ -84,6 +85,8 @@ module.exports = function exportGrunt(grunt) {
     function Deployment(contractName) {
 
       const deferred = Q.defer()
+      const contract = web3.eth.contract(contractsObj[contractName].abi)
+      const contractParams = options.contractParams[contractName] || []
       const txParams = {
         data: hexify(contractsObj[contractName].bytecode),
         gasPrice: web3.toHex(web3.eth.gasPrice)
@@ -91,7 +94,7 @@ module.exports = function exportGrunt(grunt) {
 
       txParams.gas = web3.toHex(web3.eth.estimateGas(txParams))
 
-      web3.eth.sendTransaction(txParams, (err, txHex) => {
+      contract.new.apply(this, contractParams.concat([txParams, (err, txHex) => {
         if (err) {
           grunt.log.error(`Deploying ${contractName} failed: ${err.message}`)
           return done(false)
@@ -126,7 +129,7 @@ module.exports = function exportGrunt(grunt) {
           deferred.resolve()
 
         })
-      })
+      }])
 
       return deferred.promise
     }
