@@ -20,6 +20,7 @@ module.exports = function exportGrunt(grunt) {
     const requiredOptionKeys = ['contracts', 'chain', 'deploy']
 
     Object.keys(contractsObj).forEach((contractName) => {
+      options.contractParams[contractName] = options.contractParams[contractName] || []
       contractsObj[contractName].abi = JSON.parse(contractsObj[contractName].interface)
     })
 
